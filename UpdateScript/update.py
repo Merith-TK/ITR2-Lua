@@ -133,7 +133,7 @@ def generate_lua_string(node: PathList, indent: int = 0) -> str:
 
     if node.items:
         for item in node.items:
-            lua_str += f"{indent_str}      {item},\n"
+            lua_str += f"{indent_str}\t{item},\n"
 
     if len(node.paths) > 0:
         lua_str += "\n"
