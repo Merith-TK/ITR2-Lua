@@ -47,8 +47,7 @@ def add_to_tree(
 
     # Handle item type differentiation
     if item_type == "magazine":
-        item_name = item_name.replace("Mag_", "")
-        item_entry = f"Mag_{item_name} = " + item.split(" = ")[1]
+        item_entry = item.replace("Mag_", "").replace("_Mag", "")
         if item_entry not in existing_items.values():
             current_node.items.append(item_entry)
         return
@@ -67,25 +66,6 @@ def add_to_tree(
     item_entry = f"Item = " + item.split(" = ")[1]
     if item_entry not in existing_items.values():
         current_node.items.append(item_entry)
-
-    # Handle prefix removal and case adjustments as needed
-    for prefix in type_prefixes.keys():
-        if item_name.startswith(prefix):
-            item_name = item_name[len(prefix):]
-            break
-
-    if item_name and item_name[0].islower():
-        item_name = item_name[0].upper() + item_name[1:]
-
-    if item_name and item_name[0].isdigit():
-        item_name = "_" + item_name
-
-    item = item_name + " = " + item.split(" = ")[1]
-
-    if item not in existing_items.values():
-        current_node.items.append(item)
-    else:
-        print(f"Duplicate item found for: {item_name}. Not adding.")
 
 def get_path_and_name(asset_path: str, double_slash: bool):
     start = asset_path.find("/BPs/") + 4
