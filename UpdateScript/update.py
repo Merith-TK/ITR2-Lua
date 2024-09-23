@@ -10,22 +10,11 @@ class PathList:
     items: List[str] = field(default_factory=list)
     paths: List["PathList"] = field(default_factory=list)
 
-type_defs = {
-    # "Mag": "Magazines",
-    # "ValuableItem": "Valuables",
-    # "Ash": "Ashes",
-}
-
-type_suffixes = {key + "_": value for key, value in type_defs.items()}
-type_prefixes = {key + "_": value for key, value in type_defs.items()}
-
 def add_to_tree(
     root: PathList,
     path: List[str],
     item: str,
     item_type: str,
-    type_suffixes: Dict[str, str],
-    type_prefixes: Dict[str, str],
 ):
     current_node = root
 
@@ -87,15 +76,13 @@ def add_json_contents(
     json_data: Dict,
     double: bool,
     item_type: str,
-    type_suffixes: Dict[str, str],
-    type_prefixes: Dict[str, str],
 ):
     for dictionary in json_data[0]["Rows"]:
         paths, name = get_path_and_name(
             json_data[0]["Rows"][dictionary][actor][path], double
         )
         fullname = name + ' = "' + json_data[0]["Rows"][dictionary][actor][path] + '"'
-        add_to_tree(pathlists, paths, fullname, item_type, type_suffixes, type_prefixes)
+        add_to_tree(pathlists, paths, fullname, item_type)
 
 def generate_lua_string(node: PathList, indent: int = 0) -> str:
     indent_str = "\t" * indent
@@ -126,7 +113,7 @@ def main(input_dir: str, output_file: str):
 
     for item_type, filename in json_files.items():
         with open(os.path.join(input_dir, filename), "r") as file:
-            json_data = json.load(file)
+            json_data = json.load(file)  # Load JSON data
             actor = "ItemActor" if item_type != "artifact" else "NestClass"
             path = "AssetPathName" if item_type != "artifact" else "ObjectPath"
             double = item_type == "weapon"
@@ -137,8 +124,6 @@ def main(input_dir: str, output_file: str):
                 json_data=json_data,
                 double=double,
                 item_type=item_type,
-                type_suffixes=type_suffixes,
-                type_prefixes=type_prefixes,
             )
 
     # Generate and write the Lua file
