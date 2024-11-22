@@ -16,7 +16,6 @@ local function testLibrary(library)
     end
 end
 
-ExecuteWithDelay(3000, function ()
+ExecuteWithDelay(3000, function()
     testLibrary(ITR2)
 end)
-
