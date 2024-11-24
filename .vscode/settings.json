@@ -4,7 +4,7 @@
         "RegisterHook"
     ],
     "[lua]": {
-        "editor.defaultFormatter": "sumneko.lua"
+        "editor.defaultFormatter": "Koihik.vscode-lua-format"
     },
     "Lua.diagnostics.disable": [
         "undefined-doc-param",
